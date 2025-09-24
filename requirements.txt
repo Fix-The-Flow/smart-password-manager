@@ -1,0 +1,36 @@
+# Smart Password Manager - Python Dependencies
+
+# Cryptography
+cryptography>=41.0.0
+
+# For enhanced security and random generation
+secrets  # Built-in module (Python 3.6+)
+
+# Standard library modules used (no install required):
+# - argparse
+# - hashlib
+# - json
+# - os
+# - pathlib
+# - getpass
+# - datetime
+# - typing
+# - difflib
+# - uuid
+# - shutil
+# - math
+# - re
+# - string
+# - base64
+
+# Optional development dependencies (uncomment if needed):
+# pytest>=7.0.0              # For testing
+# black>=22.0.0               # Code formatting
+# flake8>=5.0.0               # Linting
+# mypy>=1.0.0                 # Type checking
+# coverage>=6.0.0             # Test coverage
+
+# Optional GUI dependencies (for future GUI implementation):
+# tkinter                     # Built-in GUI framework
+# PyQt5>=5.15.0               # Alternative GUI framework
+# kivymd>=1.1.0               # Mobile-first GUI framework
