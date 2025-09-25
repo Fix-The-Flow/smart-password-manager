@@ -6,7 +6,7 @@ Provides encryption/decryption and key management functionality.
 import hashlib
 import secrets
 import base64
-from typing import bytes, str, Tuple
+from typing import Tuple
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes

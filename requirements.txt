@@ -1,10 +1,14 @@
 # Smart Password Manager - Python Dependencies
 
-# Cryptography
+# Core dependencies
+flask>=3.0.0
+flask-wtf>=1.2.0
+wtforms>=3.2.0
 cryptography>=41.0.0
+gunicorn>=21.0.0
 
 # For enhanced security and random generation
-secrets  # Built-in module (Python 3.6+)
+# secrets is built-in (Python 3.6+)
 
 # Standard library modules used (no install required):
 # - argparse

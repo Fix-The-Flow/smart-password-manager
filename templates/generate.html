@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}Generate Password - Smart Password Manager{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1><i class="fas fa-key"></i> Generate Password</h1>
+        <p class="lead">Create a secure, unique password for your account</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-cogs"></i> Password Settings</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-8">
+                            {{ form.account.label(class="form-label") }}
+                            {{ form.account(class="form-control", placeholder="e.g., gmail.com, facebook.com") }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.length.label(class="form-label") }}
+                            {{ form.length(class="form-control") }}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label class="form-label">Character Types</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        {{ form.include_uppercase(class="form-check-input") }}
+                                        {{ form.include_uppercase.label(class="form-check-label") }}
+                                    </div>
+                                    <div class="form-check">
+                                        {{ form.include_lowercase(class="form-check-input") }}
+                                        {{ form.include_lowercase.label(class="form-check-label") }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        {{ form.include_numbers(class="form-check-input") }}
+                                        {{ form.include_numbers.label(class="form-check-label") }}
+                                    </div>
+                                    <div class="form-check">
+                                        {{ form.include_symbols(class="form-check-input") }}
+                                        {{ form.include_symbols.label(class="form-check-label") }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                {{ form.pronounceable(class="form-check-input") }}
+                                {{ form.pronounceable.label(class="form-check-label") }}
+                                <small class="text-muted d-block">Easier to remember but may be less secure</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            {{ form.reminder_days.label(class="form-label") }}
+                            {{ form.reminder_days(class="form-control", placeholder="30, 60, 90...") }}
+                            <small class="text-muted">Days until password change reminder</small>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-magic"></i> Generate Password
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        {% if generated_password %}
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-check-circle text-success"></i> Generated Password</h5>
+            </div>
+            <div class="card-body">
+                <div class="password-display" id="passwordDisplay">
+                    {{ generated_password }}
+                </div>
+                
+                <div class="d-grid gap-2 mb-3">
+                    <button class="btn btn-outline-secondary" onclick="copyPassword()">
+                        <i class="fas fa-copy"></i> Copy Password
+                    </button>
+                </div>
+                
+                {% if password_strength %}
+                <div class="mb-3">
+                    <label class="form-label">Password Strength: {{ password_strength }}%</label>
+                    <div class="strength-bar">
+                        <div class="strength-fill" style="width: {{ password_strength }}%; 
+                             background: {% if password_strength >= 80 %}#28a745{% elif password_strength >= 60 %}#ffc107{% else %}#dc3545{% endif %};"></div>
+                    </div>
+                    <small class="text-muted">
+                        {% if password_strength >= 80 %}Very Strong{% elif password_strength >= 60 %}Good{% else %}Weak{% endif %}
+                    </small>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h6><i class="fas fa-lightbulb"></i> Tips</h6>
+            </div>
+            <div class="card-body small">
+                <ul class="mb-0">
+                    <li>Use at least 12 characters for better security</li>
+                    <li>Include symbols for maximum strength</li>
+                    <li>Each account should have a unique password</li>
+                    <li>Set reminders to change passwords regularly</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function copyPassword() {
+    const passwordElement = document.getElementById('passwordDisplay');
+    const text = passwordElement.textContent.trim();
+    
+    navigator.clipboard.writeText(text).then(function() {
+        // Show success feedback
+        const btn = event.target.closest('button');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        btn.classList.add('btn-success');
+        btn.classList.remove('btn-outline-secondary');
+        
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.classList.remove('btn-success');
+            btn.classList.add('btn-outline-secondary');
+        }, 2000);
+    });
+}
+</script>
+{% endblock %}

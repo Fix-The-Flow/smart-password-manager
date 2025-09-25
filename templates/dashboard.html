@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Smart Password Manager{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1><i class="fas fa-tachometer-alt"></i> Dashboard</h1>
+        <p class="lead">Your password security overview</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-key fa-2x text-primary mb-2"></i>
+                <h4>{{ stats.total_passwords }}</h4>
+                <small class="text-muted">Total Passwords</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-building fa-2x text-success mb-2"></i>
+                <h4>{{ stats.unique_accounts }}</h4>
+                <small class="text-muted">Accounts</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-clock fa-2x {% if stats.due_reminders > 0 %}text-warning{% else %}text-info{% endif %} mb-2"></i>
+                <h4>{{ stats.due_reminders }}</h4>
+                <small class="text-muted">Due Reminders</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-chart-line fa-2x text-info mb-2"></i>
+                <h4>{{ "%.1f"|format(stats.average_strength) }}%</h4>
+                <small class="text-muted">Avg Strength</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if reminders %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-exclamation-triangle"></i> Password Reminders Due</h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                    {% for account, days_ago in reminders %}
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ account }}</strong>
+                            <br>
+                            <small class="text-muted">Password is {{ days_ago }} days old</small>
+                        </div>
+                        <span class="badge bg-warning rounded-pill">Update Needed</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-plus"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('generate_password') }}" class="btn btn-primary">
+                        <i class="fas fa-key"></i> Generate New Password
+                    </a>
+                    <a href="{{ url_for('premium') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-crown"></i> View Premium Features
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-shield-alt"></i> Security Tips</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-check text-success"></i> Use unique passwords for each account</li>
+                    <li><i class="fas fa-check text-success"></i> Update passwords regularly</li>
+                    <li><i class="fas fa-check text-success"></i> Enable 2FA when possible</li>
+                    <li><i class="fas fa-check text-success"></i> Keep your master password secure</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
