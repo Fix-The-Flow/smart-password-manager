@@ -183,13 +183,13 @@ def not_found_error(error):
 def internal_error(error):
     return render_template('500.html'), 500
 
+# Create templates directory if it doesn't exist
+templates_dir = os.path.join(os.path.dirname(__file__), 'templates')
+static_dir = os.path.join(os.path.dirname(__file__), 'static')
+os.makedirs(templates_dir, exist_ok=True)
+os.makedirs(static_dir, exist_ok=True)
+
 if __name__ == '__main__':
-    # Create templates directory if it doesn't exist
-    templates_dir = os.path.join(os.path.dirname(__file__), 'templates')
-    static_dir = os.path.join(os.path.dirname(__file__), 'static')
-    os.makedirs(templates_dir, exist_ok=True)
-    os.makedirs(static_dir, exist_ok=True)
-    
     print("🌐 Smart Password Manager Web App")
     print("================================")
     print("Starting web server...")
@@ -198,7 +198,8 @@ if __name__ == '__main__':
     
     try:
         port = int(os.environ.get('PORT', 5000))
-        app.run(debug=False, host='0.0.0.0', port=port)
+        debug_mode = os.environ.get('FLASK_ENV') != 'production'
+        app.run(debug=debug_mode, host='0.0.0.0', port=port)
     except Exception as e:
         print(f"Error starting web app: {e}")
         import traceback
